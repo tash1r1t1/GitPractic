@@ -13,6 +13,26 @@ public class ShoppingCart{
     /**
      * Tests all class methods. 
      */
+    private void appendSeparator(StringBuilder sb, int lineLength){
+        for(int i = 0; i < lineLength; i++)
+            sb.append("\n");
+    }
+
+    private void adjustColumnWidth(int[] width, String[] columns){
+        for(int i = 0; i < width.length; i++)
+            width[i] = (int) Math.max(width[i], columns[i].length());
+    }
+
+    private void appendFormattedLine(StringBuilder sb,
+                                     String[] line,
+                                     int[] align,
+                                     int[] width,
+                                     Boolean newLine){
+        for(int i = 0; i < line.length; i++)
+            appendFormatted(sb, line[i], align[i], width[i]);
+        if(newLine)
+            sb.append("\n");
+    }
     public static void main(String[] args) {
         // TODO: add tests here
         ShoppingCart cart = new ShoppingCart();
@@ -88,12 +108,9 @@ public class ShoppingCart{
         // column max length
         int[] width = new int[]{0,0,0,0,0,0};
         for (String[] line : lines)
-            for (int i = 0; i < line.length; i++)
-                width[i] = (int) Math.max(width[i], line[i].length());
-        for (int i = 0; i < header.length; i++)
-            width[i] = (int) Math.max(width[i], header[i].length());
-        for (int i = 0; i < footer.length; i++)
-            width[i] = (int) Math.max(width[i], footer[i].length());
+            adjustColumnWidth(width, line);
+        adjustColumnWidth(width, header);
+        adjustColumnWidth(width, footer);
 
         // line length
         int lineLength = width.length - 1;
